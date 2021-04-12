@@ -100,7 +100,7 @@ const router = new Router({
       path: '/login',
       component: () => import(/* webpackChunkName: "open" */ './views/Login'),
       meta: {
-        auth: true
+        auth: false
       }
     }
   ]
@@ -128,9 +128,9 @@ router.beforeEach((to, from, next) => {
           next()
         }
       } else {
-        next(
-          // {path: '/login'}
-        )
+        next({
+          path: '/login'
+        })
       }
     } else {
       if (store.getters['user/isAuthenticated']) {

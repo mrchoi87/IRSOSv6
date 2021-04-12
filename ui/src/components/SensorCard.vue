@@ -48,7 +48,7 @@
                       {{data.name}}
                       <div
                         class="ml-auto"
-                        style="color:#595d6e;"
+                        style="color:#595d6e;font-size:2.0em;"
                       >{{getObsData(getObservations[Number(data.id)])}}</div>
                     </div>
                   </colorTemplate>
@@ -215,7 +215,7 @@ export default {
 
 <style scoped>
 .textTitle {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 500;
   margin-bottom: 0;
   color: #595d6e;
