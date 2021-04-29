@@ -5,7 +5,7 @@
            <div class="modal-container">
              <div class="modal-header">
                <slot name="header">
-                 검색 포트 지정
+                 default header
                </slot>
              </div>
              <div class="modal-body">
@@ -59,10 +59,39 @@
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;
+  margin: 0 auto;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .modal-body {
   margin: 20px 0;
+}
+
+.modal-body .start:after{ clear: both; display: block; content: '' }
+
+.modal-body .start .a {
+  float: left;
+}
+
+.modal-body .start .b {
+  float: right;
+  font-size: large;
+  font-weight: bold;
+  padding: 3px;
+}
+
+.modal-body .last:after{ clear: both; display: block; content: '' }
+
+.modal-body .last .c {
+  float: left;
+}
+
+.modal-body .last .d {
+  float: right;
+  font-size: large;
+  font-weight: bold;
+  padding: 3px;
 }
 
 .modal-default-button {

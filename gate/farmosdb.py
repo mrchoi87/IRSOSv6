@@ -34,6 +34,7 @@ devinfo : [
 
 class FarmosDB:
     _CUROBS_QUERY = "update current_observations set obs_time = %s, nvalue = %s where data_id = %s"
+    _OLDOBS_QUERY = "insert into current_observations(obs_time, nvalue, data_id) values(%s, %s, %s) on duplicate key update obs_time = %s, nvalue = %s"
     _OBS_QUERY = "insert observations(obs_time, nvalue, data_id) values(%s, %s, %s)"
     _REQINS_QUERY = "insert requests(opid, device_id, command, params) values(%s, %s, %s, %s)"
     _REQUPS_QUERY = "update requests set status = %s, exectime = now() where opid = %s "
@@ -47,7 +48,8 @@ class FarmosDB:
         "ratio" : 5,
         "control" : 6,
         "area" : 7,
-        "alert" : 8
+        "alert" : 8,
+        "oldvalue" : 9
     }
 
     def __init__(self, option, devinfo, logger):
@@ -81,15 +83,51 @@ class FarmosDB:
     def readmsg(self):
         pass
 
+    def olddata(self, dataid):
+        query = "select * from observations where data_id = %s and obs_time > now() - interval 5 minute"
+        indata = [ None, None ]
+        with self._lock:
+            try:
+                if self._isconnected is False:
+                    self.connect()
+                self._cur.execute(query, str(dataid))
+                row = self._cur.fetchone()
+                self._logger.info("interval row data : " + str(row))
+                if row is not None:
+                    indata[0] = row[1]
+                    indata[1] = row[2]
+            except Exception as ex:
+                self._logger.warn("DB exception : " + str(ex))
+                try:
+                    self.close()
+                except Exception as ex:
+                    self._logger.warn("DB exception : " + str(ex))
+        return indata
+
     def _writedata(self, time, nvalue, dataid):
+
         params = [time, nvalue, dataid]
+
+        odata = self.olddata(dataid)
+
+        if odata[0] is not None:
+            params_ = [odata[0].strftime('%Y-%m-%d %H:%M:%S'), odata[1], dataid + 8, odata[0].strftime('%Y-%m-%d %H:%M:%S'), odata[1]]
+        else:
+            params_ = [time, nvalue, dataid + 8, time, nvalue]
+
+        # params_ = [time, nvalue, oldvalue, dataid]
+
         print FarmosDB._CUROBS_QUERY, params
         self._logger.warn("_writedata params: " + str(params))
+        self._logger.warn("_writedata params: " + str(params_))
+
         with self._lock:
             try:
                 if self._isconnected is False:
                     self.connect()
                 self._cur.execute(FarmosDB._CUROBS_QUERY, params)
+                if params_[2]/10000000 == 1 and params_[2]%10 == 9:
+                    self._cur.execute(FarmosDB._OLDOBS_QUERY, params_ )
                 self._cur.execute(FarmosDB._OBS_QUERY, params)
                 self._conn.commit()
             except Exception as ex:
@@ -98,7 +136,6 @@ class FarmosDB:
                     self.close()
                 except Exception as ex:
                     self._logger.warn("DB exception : " + str(ex))
-
 
     def getdataid(self, devid, code):
         if code in FarmosDB._CODESET:

@@ -9,15 +9,13 @@
       <modal v-if="showModal" @close="showModal = false">
         <h3 slot="header">검색 포트 지정</h3>
         <span slot="body">
-          <div class="floating-label">
-            <input placeholder="0" v-model.number="startPort" type="number"/>
-            <label for="start">번 부터</label>
-            <div class="icon"></div>
+          <div class="start">
+            <div class="a"><input size="10%" style="font-size:1rem; font-weight:bold;" placeholder="0" v-model.number="startPort" type="number"/></div>
+            <div class="b"><label for="start">번 부터</label></div>
           </div>
-          <div class="floating-label">
-            <input placeholder="5" v-model.number="lastPort" type="number"/>
-            <label for="last">번 까지</label>
-            <div class="icon"></div>
+          <div class="last">
+            <div class="c"><input size="10%" style="font-size:1rem; font-weight:bold;" placeholder="5" v-model.number="lastPort" type="number"/></div>
+            <div class="d"><label for="last">번 까지</label> </div>
           </div>
         </span>
         <span slot="footer" @click="showModal = false">

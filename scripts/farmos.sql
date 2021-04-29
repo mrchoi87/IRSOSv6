@@ -1,4 +1,4 @@
--- 
+--
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -8,7 +8,7 @@ CREATE database farmos;
 -- 사용자 생성
 CREATE USER 'farmos'@'localhost' IDENTIFIED BY 'farmosv2@';
 GRANT ALL PRIVILEGES ON farmos.* TO 'farmos'@'localhost';
-FLUSH PRIVILEGES; 
+FLUSH PRIVILEGES;
 
 USE farmos;
 
@@ -184,8 +184,7 @@ CREATE TABLE `current_observations` (
   `obs_time` datetime NOT NULL,
   `nvalue` double DEFAULT NULL,
   `modified_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`data_id`) USING BTREE,
-  CONSTRAINT `fk_current_observations_dataindexes` FOREIGN KEY (`data_id`) REFERENCES `dataindexes` (`id`)
+  PRIMARY KEY (`data_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

@@ -71,6 +71,9 @@ def limitHighLow(high,low,x):
     elif x < low: return low
     else: return x
 
+def toCos(x):
+    return math.cos(x)
+
 class EquationProcessor(Processor):
     """
     단순한 수식을 평가하는 프로세서
@@ -83,13 +86,17 @@ class EquationProcessor(Processor):
     def evaluate(self, rule, proc, dbcur):
         self._tsidx = rule["tsidx"]
         self._tmpdata = rule["inputs"]
+
+        self._logger.warn("rule[tsidx]" + str(rule["tsidx"]))
+        self._logger.warn("rule[inputs]" + str(rule["inputs"]))
+
         values = []
 
         if isinstance(proc["eq"], list):
             for eq in proc["eq"]:
-                values.append (simple_eval(eq, names=self.namehandler, functions={"exp":f_exp, "log":f_log, "int":toInt, "limit":limitHighLow}))
+                values.append (simple_eval(eq, names=self.namehandler, functions={"exp":f_exp, "log":f_log, "int":toInt, "limit":limitHighLow, "cos":toCos}))
         else:
-            values.append (simple_eval(proc["eq"], names=self.namehandler, functions={"exp":f_exp, "log":f_log, "int":toInt, "limit":limitHighLow}))
+            values.append (simple_eval(proc["eq"], names=self.namehandler, functions={"exp":f_exp, "log":f_log, "int":toInt, "limit":limitHighLow, "cos":toCos}))
 
         print proc["eq"], "evaluated.", values
         return ProcResult(RetCode.OK, proc, values)

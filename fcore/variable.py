@@ -15,7 +15,7 @@ class Variable(object):
         self._modified = datetime.now()
         self._observed = datetime.now()
         self._updated = False
-   
+
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, str(self._nvalue))
 
@@ -28,7 +28,7 @@ class Variable(object):
             self._nvalue = value
             self._modified = datetime.now()
         self._observed = datetime.now()
-        self._updated = True 
+        self._updated = True
 
     def setfromdb(self, row):
         """shold be used when it loaded from db"""
@@ -67,7 +67,7 @@ class Variable(object):
 
     def isupdated(self):
         return self._updated
-        
+
     def applied(self):
         self._updated = False
 

@@ -30,7 +30,7 @@
                 getObservations['1'+device.id.toString().padStart(5,0)+'04'].nvalue : 0" text="초 남음" />
                   </h5>
                   <div style="text-align:center" class="mb-3">
-                    <el-popover trigger="hover" placement="top-start" v-if="device.spec.Type.split('/')[1] === 'level3'">
+                    <el-popover trigger="hover" placement="top-start" v-if="device.spec.Type.split('/')[1] === 'level2'">
                       <template>
                         <el-divider content-position="left">열기 시간</el-divider>
                         <div v-if="controlData[device.id]">
