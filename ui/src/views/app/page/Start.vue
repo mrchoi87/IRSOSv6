@@ -16,7 +16,7 @@
     </b-row>
     <b-row class="mb-2" v-if="getGreenHouse.length > 0">
       <b-col lg="7">
-        <h4 class="c-grey-900 mT-30">축사 상황</h4>
+        <h4 class="c-grey-900 mT-30">내부 상황</h4>
         <div v-for="house in getGreenHouse" :key="house.id">
           <SensorCard :count="4" class="mb-2" :field="house" :path="['index','greenhouse']" />
         </div>
