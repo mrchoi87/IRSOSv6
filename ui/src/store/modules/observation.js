@@ -19,7 +19,7 @@ const actions = {
     clearInterval(observationInterval)
     observationInterval = setInterval(function () {
       dispatch('fetchDataObservations')
-    }, 30000)
+    }, 10000)
     try {
       const { data } = await Vue.axios.get('farm/observation')
       commit('setObservations', data)
